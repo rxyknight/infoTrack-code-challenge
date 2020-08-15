@@ -1,4 +1,6 @@
-﻿using server.Analysor;
+﻿using Microsoft.AspNetCore.Hosting.Builder;
+using server.Analysor;
+using server.Factories;
 using server.Interfaces;
 using server.SearchEngines;
 using System;
@@ -8,27 +10,17 @@ namespace server.Services
 {
     public class RankingService : IRankingService
     {
-        private IGoogleRankingAnalysor _googleRankingAnalysor;
-        private IBingRankingAnalysor _bingRankingAnalysor;
-        public RankingService(IGoogleRankingAnalysor googleRankingAnalysor,
-            IBingRankingAnalysor bingRankingAnalysor)
+        public RankingService()
         {
-            _googleRankingAnalysor = googleRankingAnalysor;
-            _bingRankingAnalysor = bingRankingAnalysor;
+
         }
         public Dictionary<string, List<int>> GetRankingResult(string keywords, string url, List<string> searchEngineTypes)
         {
             var results = new Dictionary<string, List<int>>();
             searchEngineTypes.ForEach(type =>
             {
-                if (type == "google")
-                {
-                    results[type] = _googleRankingAnalysor.Analyse(keywords, url);
-                }
-                if (type == "bing")
-                {
-                    results[type] = _bingRankingAnalysor.Analyse(keywords, url);
-                }
+                IRankingAnalysor rankingAnalysor = RankingAnalysorFactory.Create(type);
+                results[type] = rankingAnalysor.Analyse(keywords, url);
             });
             return results;
         }

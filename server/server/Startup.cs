@@ -42,11 +42,6 @@ namespace server
 
             services.AddScoped<IRankingService, RankingService>();
 
-            services.AddScoped<IGoogleSearchEngine, GoogleSearchEngine>();
-            services.AddScoped<IGoogleRankingAnalysor, GoogleRankingAnalysor> ();
-
-            services.AddScoped<IBingSearchEngine, BingSearchEngine>();
-            services.AddScoped<IBingRankingAnalysor, BingRankingAnalysor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
